@@ -20,5 +20,8 @@
     "webpack": "^5.99.5",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.1"
+  },
+  "dependencies": {
+    "random-seedable": "^1.0.8"
   }
 }
