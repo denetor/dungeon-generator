@@ -291,6 +291,102 @@ export class CellularAutomata {
     }
 
 
+    addEntrance(preferredSide: number = 0): boolean {
+        let added: boolean;
+        let cycles = 0;
+        while (!added && cycles <= 4) {
+            switch (preferredSide) {
+                case 0:
+                    added = this.addEntranceTop();
+                    break;
+                case 1:
+                    added = this.addEntranceRight();
+                    break;
+                case 2:
+                    added = this.addEntranceBottom();
+                    break;
+                case 3:
+                    added = this.addEntranceLeft();
+                    break;
+            }
+            cycles++;
+        }
+        return added;
+    }
+
+
+    /**
+     * Add an entrance at the top side. The entrance is positioned at the first
+     * available border spot connected to the cavity.
+     *
+     * @return {boolean} Returns true if an entrance is successfully added,
+     * otherwise false.
+     */
+    addEntranceTop(): boolean {
+        for (let x = 0; x < this.x; x++) {
+            if (this.cells[this.x + x] === 0) {
+                this.cells[x] = 0;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Add an entrance at the top side. The entrance is positioned at the first
+     * available border spot connected to the cavity.
+     *
+     * @return {boolean} Returns true if an entrance is successfully added,
+     * otherwise false.
+     */
+    addEntranceBottom(): boolean {
+        for (let x = 0; x < this.x; x++) {
+            if (this.cells[((this.y-2) * this.x) + x] === 0) {
+                this.cells[((this.y-1) * this.x) + x] = 0;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Add an entrance at the top side. The entrance is positioned at the first
+     * available border spot connected to the cavity.
+     *
+     * @return {boolean} Returns true if an entrance is successfully added,
+     * otherwise false.
+     */
+    addEntranceLeft(): boolean {
+        for (let y = 0; y < this.y; y++) {
+            if (this.cells[y*this.x +1] === 0) {
+                this.cells[y*this.x] = 0;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Add an entrance at the top side. The entrance is positioned at the first
+     * available border spot connected to the cavity.
+     *
+     * @return {boolean} Returns true if an entrance is successfully added,
+     * otherwise false.
+     */
+    addEntranceRight(): boolean {
+        for (let y = 0; y < this.y; y++) {
+            if (this.cells[y*this.x + this.x - 2] === 0) {
+                this.cells[y*this.x + this.x - 1] = 0;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     toString(): string {
         let s = '';
         for (let y = 0; y < this.y; y++) {

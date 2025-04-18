@@ -18,4 +18,5 @@ ca.processStep();
 ca.processStep();
 ca.fillMinorCavities();
 ca.shrinkToCavity();
+ca.addEntrance(2);
 console.log(ca.toString());
