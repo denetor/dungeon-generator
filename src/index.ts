@@ -10,12 +10,12 @@ function helloComponent() {
 document.body.appendChild(helloComponent());
 
 
-const ca = new CellularAutomata(100, 50, 836254915);
+const ca = new CellularAutomata(120, 50, 8362549153);
 console.log(ca.toString());
 ca.processStep();
 ca.processStep();
 ca.processStep();
 ca.processStep();
-console.log(ca.toString());
 ca.fillMinorCavities();
+ca.shrinkToCavity();
 console.log(ca.toString());

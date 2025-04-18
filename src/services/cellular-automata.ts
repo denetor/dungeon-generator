@@ -179,6 +179,118 @@ export class CellularAutomata {
     }
 
 
+    /**
+     * Shrink the map to fit the cavities (don't leave any completely filled
+     * row/column that is not directly touching a cavity)
+     */
+    shrinkToCavity() {
+        let xLow = 0;
+        let xHi = this.x-1;
+        let yLow = 0;
+        let yHi = this.y-1;
+        while (this.isColumnWithoutHoles(this.cells, xLow)) {
+            xLow++
+        }
+        while (this.isColumnWithoutHoles(this.cells, xHi)) {
+            xHi--;
+        }
+        while (this.isRowWithoutHoles(this.cells, yLow)) {
+            yLow++
+        }
+        while (this.isRowWithoutHoles(this.cells, yHi)) {
+            yHi--;
+        }
+        this.cells = this.getCropped(this.cells, xLow, xHi, yLow, yHi);
+        this.x = xHi - xLow + 1;
+        this.y = yHi - yLow + 1;
+        this.addBorder();
+    }
+
+
+    /**
+     * Determines whether a specific row in the grid has no holes
+     * (i.e., no cell with a value of 0).
+     *
+     * @param {number[]} cells - An array representing the contents of the row to be checked.
+     * @param {number} rowNr - The row number being checked.
+     * @return {boolean} Returns true if the row does not contain any holes (no cells with a value of 0), otherwise false.
+     */
+    isRowWithoutHoles(cells: number[], rowNr: number): boolean {
+        for (let x = 0; x < this.x; x++) {
+            if (this.getCell(cells, x, rowNr) === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * Checks if a given column in a grid is without holes.
+     * A "hole" is defined as a cell with a value of 0.
+     *
+     * @param {number[]} cells - The grid represented as a flat array of numbers.
+     * @param {number} colNr - The index of the column to inspect.
+     * @return {boolean} Returns true if the column has no holes (no cells with a value of 0), false otherwise.
+     */
+    isColumnWithoutHoles(cells: number[], colNr: number): boolean {
+        for (let y = 0; y < this.y; y++) {
+            if (this.getCell(cells, colNr, y) === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * Crops a 2D array represented as a 1D array based on specified boundaries.
+     * Extracts the portion of the array defined by the x and y coordinate ranges.
+     *
+     * @param {number[]} cells - A 1D array representing the original 2D grid.
+     * @param {number} xLow - The lower bound for the x-coordinate.
+     * @param {number} xHi - The upper bound for the x-coordinate.
+     * @param {number} yLow - The lower bound for the y-coordinate.
+     * @param {number} yHi - The upper bound for the y-coordinate.
+     * @return {number[]} A new 1D array containing the cropped portion of the original grid.
+     */
+    getCropped(cells: number[], xLow: number, xHi: number, yLow: number, yHi: number): number[] {
+        const newCells = [];
+        for (let y = yLow; y <= yHi; y++) {
+            for (let x = xLow; x <= xHi; x++) {
+                newCells.push(this.getCell(cells, x, y));
+            }
+        }
+        return newCells;
+    }
+
+
+    /**
+     * Adds a border of value `1` around a 2D array represented as a flat array of cells.
+     *
+     * The method assumes the original 2D grid is represented in a 1D array and uses
+     * the instance variables `x` and `y` to determine the grid dimensions.
+     *
+     * @param {number[]} cells - A 1D array representing the original grid of cells.
+     * @return {number[]} A new 1D array representing the grid with a border added.
+     */
+    addBorder() {
+        const newCells = [];
+        newCells.push(... new Array(this.x+2).fill(1));
+        for (let y = 0; y < this.y; y++) {
+            newCells.push(1);
+            for (let x = 0; x < this.x; x++) {
+                newCells.push(this.cells[y*this.x + x]);
+            }
+            newCells.push(1);
+        }
+        newCells.push(... new Array(this.x+2).fill(1));
+        this.cells = newCells;
+        this.x += 2;
+        this.y += 2;
+    }
+
+
     toString(): string {
         let s = '';
         for (let y = 0; y < this.y; y++) {
