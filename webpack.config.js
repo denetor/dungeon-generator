@@ -13,6 +13,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Dungeon generator',
+            template: 'src/index.html',
         }),
     ],
     output: {
