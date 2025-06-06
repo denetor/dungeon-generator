@@ -4,7 +4,7 @@ export class CellularAutomata {
     x: number;
     y: number;
     seed: number;
-    cells: number[];
+    cells: number[] = []; // Initialize cells
 
 
     constructor(x: number, y: number, seed: number) {
@@ -292,7 +292,7 @@ export class CellularAutomata {
 
 
     addEntrance(preferredSide: number = 0): boolean {
-        let added: boolean;
+        let added: boolean = false; // Initialize added
         let cycles = 0;
         while (!added && cycles <= 4) {
             switch (preferredSide) {

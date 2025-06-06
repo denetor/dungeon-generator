@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+body { font-family: sans-serif; margin: 20px; }
+app-controls, app-dungeon-display { display: block; margin-bottom: 20px; } /* Changed from .controls to app-controls etc. */
+label { display: inline-block; width: 80px; margin-bottom: 5px; } /* Added margin-bottom for spacing */
+input[type="number"], input[type="text"] { width: 150px; margin-bottom: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;} /* Added some padding and border */
+button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; } /* Styled button */
+button:hover { background-color: #0056b3; } /* Hover effect for button */
+pre { border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; white-space: pre; font-family: monospace; overflow-x: auto; } /* Added overflow-x: auto */
