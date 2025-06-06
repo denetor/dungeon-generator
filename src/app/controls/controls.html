@@ -1,15 +1,21 @@
 <div>
-  <div>
-    <label for="width">Width:</label>
-    <input type="number" id="width" [(ngModel)]="width">
-  </div>
-  <div>
-    <label for="height">Height:</label>
-    <input type="number" id="height" [(ngModel)]="height">
-  </div>
-  <div>
-    <label for="seed">Seed:</label>
-    <input type="text" id="seed" [(ngModel)]="seed">
-  </div>
-  <button (click)="generateDungeon()">Generate Dungeon</button>
+  <mat-form-field appearance="fill">
+    <mat-label>Width</mat-label>
+    <input matInput type="number" [(ngModel)]="width">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Height</mat-label>
+    <input matInput type="number" [(ngModel)]="height">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Seed</mat-label>
+    <input matInput type="text" [(ngModel)]="seed">
+  </mat-form-field>
+</div>
+<div>
+  <button mat-raised-button color="primary" (click)="generateDungeon()">Generate Dungeon</button>
 </div>
