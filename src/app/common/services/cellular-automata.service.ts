@@ -1,6 +1,6 @@
 import {random,XORShift} from 'random-seedable';
 
-export class CellularAutomata {
+export class CellularAutomataService {
     x: number;
     y: number;
     seed: number;
@@ -387,14 +387,4 @@ export class CellularAutomata {
     }
 
 
-    toString(): string {
-        let s = '';
-        for (let y = 0; y < this.y; y++) {
-            for (let x = 0; x < this.x; x++) {
-                s += this.cells[y*this.x + x] ? '░' : ' ';
-            }
-            s += "\n";
-        }
-        return s;
-    }
 }

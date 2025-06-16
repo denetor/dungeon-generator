@@ -1,0 +1,6 @@
+.view-container {
+    display: flex;
+}
+.view-container > .view-item {
+    flex: 1;
+}

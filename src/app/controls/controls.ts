@@ -1,10 +1,11 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { CellularAutomata } from '../services/cellular-automata';
+import { CellularAutomataService } from '../common/services/cellular-automata.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {Dungeon} from "../common/models/dungeon.model";
 
 @Component({
   selector: 'app-controls',
@@ -20,11 +21,11 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './controls.css'
 })
 export class ControlsComponent { // Rename class to ControlsComponent
-  width: number = 100;
-  height: number = 60;
+  width: number = 50;
+  height: number = 25;
   seed: string = "462384512"; // Keep seed as string to match input type, convert to number when used
 
-  @Output() dungeonGenerated = new EventEmitter<string>();
+  @Output() dungeonGenerated = new EventEmitter<Dungeon>();
 
   generateDungeon(): void {
     const numericSeed = parseInt(this.seed, 10);
@@ -34,18 +35,20 @@ export class ControlsComponent { // Rename class to ControlsComponent
       return;
     }
 
-    const ca = new CellularAutomata(this.width, this.height, numericSeed);
-
-    // Process steps as in original index.ts
+    const ca = new CellularAutomataService(this.width, this.height, numericSeed);
     ca.processStep();
     ca.processStep();
     ca.processStep();
     ca.processStep();
-
     ca.fillMinorCavities();
     ca.shrinkToCavity();
-    ca.addEntrance();
+    ca.addEntrance(1);
 
-    this.dungeonGenerated.emit(ca.toString());
+    const dungeon: Dungeon = new Dungeon({
+      width: ca.x,
+      height: ca.y,
+      cells: ca.cells,
+    });
+    this.dungeonGenerated.emit(dungeon);
   }
 }

@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
 import { RouterOutlet } from '@angular/router';
 import { ControlsComponent } from './controls/controls'; // Adjusted path if class name was 'Controls'
 import { DungeonDisplayComponent } from './dungeon-display/dungeon-display';
-import {ThreeDViewerComponent} from "./three-d-viewer/three-d-viewer"; // Adjusted path
+import {ThreeDViewerComponent} from "./three-d-viewer/three-d-viewer";
+import {Dungeon} from "./common/models/dungeon.model"; // Adjusted path
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,14 @@ import {ThreeDViewerComponent} from "./three-d-viewer/three-d-viewer"; // Adjust
 export class AppComponent { // Renamed class to AppComponent
   title = 'angular-dungeon-generator'; // Made public for potential template use, removed protected
   generatedDungeon: string = '';
+  dungeon: Dungeon;
 
-  handleDungeonGenerated(dungeon: string): void {
-    this.generatedDungeon = dungeon;
+  constructor() {
+    this.dungeon = new Dungeon();
+  }
+
+  handleDungeonGenerated(dungeon: Dungeon): void {
+    this.dungeon = dungeon;
+    // this.generatedDungeon = dungeon;
   }
 }

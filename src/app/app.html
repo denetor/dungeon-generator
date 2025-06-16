@@ -1,6 +1,12 @@
 <div class="main-container">
     <app-controls (dungeonGenerated)="handleDungeonGenerated($event)"></app-controls>
-    <app-dungeon-display [dungeonString]="generatedDungeon"></app-dungeon-display>
-    <app-three-d-viewer [dungeonString]="generatedDungeon"></app-three-d-viewer>
+    <div class="view-container">
+        <div class="view-item">
+            <app-dungeon-display [dungeonString]="dungeon.toString()"></app-dungeon-display>
+        </div>
+        <div class="view-item">
+            <app-three-d-viewer [dungeon]="dungeon"></app-three-d-viewer>
+        </div>
+    </div>
 </div>
 <router-outlet></router-outlet>
