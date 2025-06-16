@@ -1,8 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
-body { font-family: sans-serif; margin: 20px; }
-app-controls, app-dungeon-display { display: block; margin-bottom: 20px; } /* Changed from .controls to app-controls etc. */
-label { display: inline-block; width: 80px; margin-bottom: 5px; } /* Added margin-bottom for spacing */
-input[type="number"], input[type="text"] { width: 150px; margin-bottom: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;} /* Added some padding and border */
-button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; } /* Styled button */
-button:hover { background-color: #0056b3; } /* Hover effect for button */
-pre { border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; white-space: pre; font-family: monospace; overflow-x: auto; } /* Added overflow-x: auto */
+/* Global Styles */
+
+/* Angular Material added styles - should be kept */
+html, body { height: 100%; }
+body {
+  margin: 0; /* Material default */
+  font-family: Roboto, "Helvetica Neue", sans-serif; /* Material default */
+  background-color: #fafafa; /* A light background for the page */
+}
+
+/* Main application container styling */
+.main-container {
+  padding: 20px;
+}
+
+/* Component spacing */
+app-controls, app-dungeon-display {
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Styling for Material Form Fields for consistent spacing */
+.mat-mdc-form-field { /* Targets Material v15+ form fields */
+  display: block !important; /* Ensure it takes block display for margin-bottom to work as expected */
+  margin-bottom: 15px !important;
+}
+
+/* Styling for the <pre> tag inside the dungeon display card */
+app-dungeon-display pre {
+  background-color: #f5f5f5; /* Slightly lighter than default Material card, or keep default */
+  border: 1px solid #e0e0e0; /* Softer border */
+  padding: 10px;
+  white-space: pre; /* Ensures formatting is preserved */
+  font-family: monospace; /* Essential for ASCII art */
+  overflow-x: auto; /* Allows horizontal scrolling if dungeon is too wide */
+  margin: 0; /* Remove any default margin if pre is direct child of mat-card-content */
+}
+
+/* Commented out old styles that are likely redundant:
+label { display: inline-block; width: 80px; margin-bottom: 5px; }
+input[type="number"], input[type="text"] { width: 150px; margin-bottom: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;}
+button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+button:hover { background-color: #0056b3; }
+Original pre style:
+pre { border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; white-space: pre; font-family: monospace; overflow-x: auto; }
+*/

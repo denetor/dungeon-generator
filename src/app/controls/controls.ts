@@ -2,11 +2,20 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { CellularAutomata } from '../services/cellular-automata';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-controls',
   standalone: true, // Explicitly add standalone flag
-  imports: [CommonModule, FormsModule], // Add FormsModule and CommonModule
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ], // Add FormsModule and CommonModule
   templateUrl: './controls.html',
   styleUrl: './controls.css'
 })
