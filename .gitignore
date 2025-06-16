@@ -20,6 +20,7 @@ lerna-debug.log*
 .env.stage
 .env.test
 .data
+.angular
 
 # OS
 .DS_Store
