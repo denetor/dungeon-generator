@@ -7,3 +7,4 @@
 - [x] Add an entrance
 - [ ] Place a number of enemies and chests
 - [ ] Prepare for Wang tileset
+- [ ] 3d viewer, wolfenstein-like
