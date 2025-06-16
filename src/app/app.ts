@@ -4,7 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { ControlsComponent } from './controls/controls'; // Adjusted path if class name was 'Controls'
 import { DungeonDisplayComponent } from './dungeon-display/dungeon-display';
 import {ThreeDViewerComponent} from "./three-d-viewer/three-d-viewer";
-import {Dungeon} from "./common/models/dungeon.model"; // Adjusted path
+import {Dungeon} from "./common/models/dungeon.model";
+import {Observable, of} from "rxjs"; // Adjusted path
 
 @Component({
   selector: 'app-root',
@@ -14,16 +15,18 @@ import {Dungeon} from "./common/models/dungeon.model"; // Adjusted path
   styleUrl: './app.css'
 })
 export class AppComponent { // Renamed class to AppComponent
-  title = 'angular-dungeon-generator'; // Made public for potential template use, removed protected
-  generatedDungeon: string = '';
   dungeon: Dungeon;
+  dungeon$: Observable<Dungeon>;
+
 
   constructor() {
+    this.dungeon$ = new Observable();
     this.dungeon = new Dungeon();
   }
 
   handleDungeonGenerated(dungeon: Dungeon): void {
     this.dungeon = dungeon;
-    // this.generatedDungeon = dungeon;
+    this.dungeon$ = of(dungeon);
+    console.log(dungeon);
   }
 }

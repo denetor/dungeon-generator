@@ -1,3 +1,5 @@
+import {Vector} from "../lib/vector.class";
+
 export class DungeonProperties {
     width?: number;
     height?: number;
@@ -14,6 +16,35 @@ export class Dungeon {
         this.width = properties?.width ?? 1;
         this.height = properties?.height ?? 1;
         this.cells = properties?.cells ?? [];
+    }
+
+
+
+    // return the cell that represents the dungeon entrance
+    findEntranceCell(): Vector {
+        for (let x=0; x<this.width; x++) {
+            if (this.cells[x] === 0) {
+                return new Vector(x, 0);
+            }
+            if (this.cells[(this.height - 1) * this.width + x] === 0) {
+                return new Vector(x, this.height - 1);
+            }
+        }
+        for (let y = 0; y < this.height; y++) {
+            if (this.cells[(this.height - 1) * this.width] === 0) {
+                return new Vector(0, y);
+            }
+            if (this.cells[(this.height - 1) * this.width + this.width-1] === 0) {
+                return new Vector(this.width-1, (this.height - 1) * this.width + this.width-1);
+            }
+        }
+        return new Vector(0, 0);
+    }
+
+
+    // return the center of the entrance cell
+    findEntranceCenter(): Vector {
+        return this.findEntranceCell();
     }
 
 
