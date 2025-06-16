@@ -1,5 +1,6 @@
 <div class="main-container">
-  <app-controls (dungeonGenerated)="handleDungeonGenerated($event)"></app-controls>
-  <app-dungeon-display [dungeonString]="generatedDungeon"></app-dungeon-display>
+    <app-controls (dungeonGenerated)="handleDungeonGenerated($event)"></app-controls>
+    <app-dungeon-display [dungeonString]="generatedDungeon"></app-dungeon-display>
+    <app-three-d-viewer [dungeonString]="generatedDungeon"></app-three-d-viewer>
 </div>
 <router-outlet></router-outlet>

@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { RouterOutlet } from '@angular/router';
 import { ControlsComponent } from './controls/controls'; // Adjusted path if class name was 'Controls'
-import { DungeonDisplayComponent } from './dungeon-display/dungeon-display'; // Adjusted path
+import { DungeonDisplayComponent } from './dungeon-display/dungeon-display';
+import {ThreeDViewerComponent} from "./three-d-viewer/three-d-viewer"; // Adjusted path
 
 @Component({
   selector: 'app-root',
   standalone: true, // Add standalone: true
-  imports: [CommonModule, RouterOutlet, ControlsComponent, DungeonDisplayComponent], // Add components
+  imports: [CommonModule, RouterOutlet, ControlsComponent, DungeonDisplayComponent, ThreeDViewerComponent], // Add components
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
