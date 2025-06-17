@@ -1,6 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {Dungeon} from "../common/models/dungeon.model";
 import {Observable, Subscription} from "rxjs";
+import {Vector} from "../common/lib/vector.class";
 
 @Component({
     selector: 'app-three-d-viewer',
@@ -12,13 +13,18 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
     private subscription: Subscription = new Subscription();
     @Input() dungeon$: Observable<Dungeon>;
     dungeon: Dungeon;
+    // viewer position
     x: number = 0;
     y: number = 0;
+    // view direction (in radians, zero is top)
+    viewDirection = 0;
 
 
     constructor() {
         this.dungeon$ = new Observable();
-        this.dungeon = new Dungeon();
+        // this.dungeon = new Dungeon();
+        this.dungeon = this.testDungeon();
+        this.generateView();
     }
 
     ngOnInit(): void {
@@ -37,13 +43,40 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
     }
 
 
+    // https://austinhenley.com/blog/raycasting.html
     generateView(): void {
-        // TODO initialize finding the entrance position.
+        // initialize finding the entrance position.
         const entrance = this.dungeon.findEntranceCenter();
-        console.log({entrance});
-        // TODO place viewer coordinates inh the middle of the entrance
+        // place viewer coordinates inh the middle of the entrance
+        this.x = entrance.x;
+        this.y = entrance.y;
         // TODO place viewing direction toward the dungeon center
+        const viewTarget = new Vector(this.dungeon.width / 2, this.dungeon.height / 2);
+        const targetAngle = Math.atan2(viewTarget.x - this.x, viewTarget.y - this.y);
+        console.log({viewer: {x: this.x, y: this.y}});
+        console.log(`angle: ${targetAngle}`);
         // TODO call image generation method
+        // const distance = this.dungeon.castRay(new Vector(this.x, this.y), -Math.PI/2);
+        const distance = this.dungeon.castRay(new Vector(this.x, this.y), targetAngle);
+        console.log(`distance: ${distance}`);
+    }
+
+
+    /**
+     * Generate a tiny test dungeon
+     */
+    testDungeon(): Dungeon {
+        const dungeon = new Dungeon();
+        dungeon.width = 5;
+        dungeon.height = 5;
+        dungeon.cells = [
+            1,1,1,1,1,
+            1,0,0,1,1,
+            1,0,0,0,1,
+            1,0,0,0,1,
+            1,0,1,1,1,
+        ];
+        return dungeon;
     }
 
 }
