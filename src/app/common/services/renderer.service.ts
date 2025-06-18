@@ -1,6 +1,7 @@
 import {Dungeon} from "../models/dungeon.model";
 import {Vector} from "../lib/vector.class";
 
+// https://austinhenley.com/blog/raycasting.html
 export class RendererService {
     // canvas target of rendering
     canvas: HTMLCanvasElement = null as any;

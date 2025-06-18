@@ -48,23 +48,32 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
     }
 
 
+    /**
+     * Initializes the view by setting the viewer's position to the middle of the dungeon entrance
+     * and aiming the viewing direction toward the dungeon's center.
+     * @return {void} Does not return any value.
+     */
     initView(): void {
         // initialize finding the entrance position.
         const entrance = this.dungeon.findEntranceCenter();
         // place viewer coordinates inh the middle of the entrance
-        this.x = 1.5;
-        this.y = 3.4;
-        // this.x = entrance.x;
-        // this.y = entrance.y;
+        this.x = entrance.x;
+        this.y = entrance.y;
         // place viewing direction toward the dungeon center
         const viewTarget = new Vector(this.dungeon.width / 2, this.dungeon.height / 2);
-        this.viewDirection = Math.atan2(viewTarget.x - this.x, viewTarget.y - this.y);
+        this.viewDirection = Math.atan2(this.x - viewTarget.x, this.y - viewTarget.y);
         console.log({viewer: {x: this.x, y: this.y}});
         console.log(`angle: ${this.viewDirection / 180 * Math.PI}deg`);
     }
 
 
-    // https://austinhenley.com/blog/raycasting.html
+    /**
+     * Generates the view for the application by initializing the renderer and
+     * setting its properties such as canvas, dungeon, position, and direction.
+     * Then invokes the render method to display the 3D view.
+     *
+     * @return {void} Does not return a value.
+     */
     generateView(): void {
         const renderer = new RendererService();
         renderer.setCanvas(document.getElementById('canvas3d') as HTMLCanvasElement);
