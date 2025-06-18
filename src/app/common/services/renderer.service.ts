@@ -65,10 +65,9 @@ export class RendererService {
             let wallHeight = this.getWallHeight(d);
             console.log(`wallHeight: ${wallHeight}`);
             // TODO transform distance to correct distortion
-            // TODO fade color basing on distance
             // TODO apply color shade basing on wall angle (wishlist)
-            // TODO draw wall
-            ctx.strokeStyle = "#777777";
+            // draw wall
+            ctx.strokeStyle = this.getWallColor(d);
             ctx.beginPath();
             ctx.moveTo(x, this.frameHeight / 2 - wallHeight / 2);
             ctx.lineTo(x, this.frameHeight / 2 + wallHeight / 2);
@@ -79,14 +78,60 @@ export class RendererService {
     }
 
 
-    getWallHeight(d: number): number {
-        if (d < 0) {
+    /**
+     * Calculates and returns the wall height based on the given distance.
+     *
+     * @param {number} distance - The distance used to calculate the wall height.
+     * If the distence is less than 0, the result is 0. If the distance is between 0 and 1 (inclusive),
+     * the frame height is returned. Otherwise, the frame height is divided by the distance.
+     * @return {number} The calculated wall height.
+     */
+    getWallHeight(distance: number): number {
+        if (distance < 0) {
             return 0;
-        } else if (d <= 1) {
+        } else if (distance <= 1) {
             return this.frameHeight;
         } else {
-            return this.frameHeight / d;
+            return this.frameHeight / distance;
         }
+    }
+
+
+    // fade color basing on distance
+    getWallColor(distance: number): string {
+        const closeDistance = 1;
+        const farDistance = (this.dungeon.height + this.dungeon.width) / 2;
+        if (distance <= closeDistance) {
+            // return full color
+            return this.getColorShade(0);
+        } else if (distance >= farDistance) {
+            // return lightest color
+            return this.getColorShade(1);
+        } else {
+            // return interpolated color shade
+            return this.getColorShade(distance / farDistance);
+        }
+    }
+
+
+    /**
+     * Calculates a color shade based on the input shade value.
+     *
+     * @param {number} shade - A numeric value representing the shade factor, typically in the range of 0 to 1.
+                               0.0: full 'from' color - 1.0: full 'to' color
+     * @return {string} The resulting color shade in the format of an RGB string.
+     */
+    getColorShade(shade: number): string {
+        const fromR = 192;
+        const fromG = 192;
+        const fromB = 192;
+        const toR = 64;
+        const toG = 64;
+        const toB = 64;
+        const shadeR = fromR + (toR - fromR) * shade;
+        const shadeG = fromG + (toG - fromG) * shade;
+        const shadeB = fromB + (toB - fromB) * shade;
+        return `rgb(${shadeR}, ${shadeG}, ${shadeB})`;
     }
 
 
