@@ -8,7 +8,7 @@ import {RendererService} from "../common/services/renderer.service";
     selector: 'app-three-d-viewer',
     standalone: true,
     imports: [],
-    template: '<div>3D Viewer</div>',
+    templateUrl: './three-d-viewer.html',
 })
 export class ThreeDViewerComponent implements OnInit, OnDestroy {
     private subscription: Subscription = new Subscription();
@@ -23,12 +23,15 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
 
     constructor() {
         this.dungeon$ = new Observable();
-        // this.dungeon = new Dungeon();
-        this.dungeon = this.testDungeon();
-        this.generateView();
+        this.dungeon = new Dungeon();
     }
 
     ngOnInit(): void {
+        // TODO remove temporary assignment
+        this.dungeon = this.testDungeon();
+        this.generateView();
+
+        // TODO fix subscription not working
         this.subscription.add(
             this.dungeon$.subscribe(dungeon => {
                 console.log('arrivato un dungeon');
@@ -58,6 +61,7 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
         console.log(`angle: ${targetAngle}`);
         // TODO call image generation method
         const renderer = new RendererService();
+        renderer.setCanvas(document.getElementById('canvas3d') as HTMLCanvasElement);
         renderer.dungeon = this.dungeon;
         renderer.position = new Vector(this.x, this.y);
         renderer.direction = targetAngle;
