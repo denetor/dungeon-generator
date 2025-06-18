@@ -2,6 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {Dungeon} from "../common/models/dungeon.model";
 import {Observable, Subscription} from "rxjs";
 import {Vector} from "../common/lib/vector.class";
+import {RendererService} from "../common/services/renderer.service";
 
 @Component({
     selector: 'app-three-d-viewer',
@@ -50,15 +51,20 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
         // place viewer coordinates inh the middle of the entrance
         this.x = entrance.x;
         this.y = entrance.y;
-        // TODO place viewing direction toward the dungeon center
+        // place viewing direction toward the dungeon center
         const viewTarget = new Vector(this.dungeon.width / 2, this.dungeon.height / 2);
         const targetAngle = Math.atan2(viewTarget.x - this.x, viewTarget.y - this.y);
         console.log({viewer: {x: this.x, y: this.y}});
         console.log(`angle: ${targetAngle}`);
         // TODO call image generation method
+        const renderer = new RendererService();
+        renderer.dungeon = this.dungeon;
+        renderer.position = new Vector(this.x, this.y);
+        renderer.direction = targetAngle;
+        renderer.render();
         // const distance = this.dungeon.castRay(new Vector(this.x, this.y), -Math.PI/2);
-        const distance = this.dungeon.castRay(new Vector(this.x, this.y), targetAngle);
-        console.log(`distance: ${distance}`);
+        // const distance = this.dungeon.castRay(new Vector(this.x, this.y), targetAngle);
+        // console.log(`distance: ${distance}`);
     }
 
 
