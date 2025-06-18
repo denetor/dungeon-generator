@@ -29,6 +29,7 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         // TODO remove temporary assignment
         this.dungeon = this.testDungeon();
+        this.initView();
         this.generateView();
 
         // TODO fix subscription not working
@@ -47,8 +48,7 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
     }
 
 
-    // https://austinhenley.com/blog/raycasting.html
-    generateView(): void {
+    initView(): void {
         // initialize finding the entrance position.
         const entrance = this.dungeon.findEntranceCenter();
         // place viewer coordinates inh the middle of the entrance
@@ -58,19 +58,40 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
         // this.y = entrance.y;
         // place viewing direction toward the dungeon center
         const viewTarget = new Vector(this.dungeon.width / 2, this.dungeon.height / 2);
-        const targetAngle = Math.atan2(viewTarget.x - this.x, viewTarget.y - this.y);
+        this.viewDirection = Math.atan2(viewTarget.x - this.x, viewTarget.y - this.y);
         console.log({viewer: {x: this.x, y: this.y}});
-        console.log(`angle: ${targetAngle}`);
-        // TODO call image generation method
+        console.log(`angle: ${this.viewDirection / 180 * Math.PI}deg`);
+    }
+
+
+    // https://austinhenley.com/blog/raycasting.html
+    generateView(): void {
         const renderer = new RendererService();
         renderer.setCanvas(document.getElementById('canvas3d') as HTMLCanvasElement);
         renderer.dungeon = this.dungeon;
         renderer.position = new Vector(this.x, this.y);
-        renderer.direction = targetAngle;
+        renderer.direction = this.viewDirection;
         renderer.render();
-        // const distance = this.dungeon.castRay(new Vector(this.x, this.y), -Math.PI/2);
-        // const distance = this.dungeon.castRay(new Vector(this.x, this.y), targetAngle);
-        // console.log(`distance: ${distance}`);
+    }
+
+
+    rotateLeft(): void {
+        this.viewDirection -= 10 * Math.PI / 180;
+        this.generateView();
+    }
+
+
+    rotateRight(): void {
+        this.viewDirection += 10 * Math.PI / 180;
+        this.generateView();
+    }
+
+
+    moveForward(): void {
+        const movement = 0.2;
+        this.x += Math.cos(this.viewDirection) * movement;
+        this.y += Math.sin(this.viewDirection) * movement;
+        this.generateView();
     }
 
 
