@@ -52,8 +52,10 @@ export class ThreeDViewerComponent implements OnInit, OnDestroy {
         // initialize finding the entrance position.
         const entrance = this.dungeon.findEntranceCenter();
         // place viewer coordinates inh the middle of the entrance
-        this.x = entrance.x;
-        this.y = entrance.y;
+        this.x = 1.5;
+        this.y = 3.4;
+        // this.x = entrance.x;
+        // this.y = entrance.y;
         // place viewing direction toward the dungeon center
         const viewTarget = new Vector(this.dungeon.width / 2, this.dungeon.height / 2);
         const targetAngle = Math.atan2(viewTarget.x - this.x, viewTarget.y - this.y);

@@ -11,10 +11,13 @@ export class RendererService {
     position: Vector;
     // observer view direction
     direction: number;
-    // field of view width
-    fov: number = 60;
+    // field of view width (in radians)
+    fov: number = 90 * Math.PI / 180;
+    // rendered image width and height
     frameWidth: number = 320;
     frameHeight: number = 200;
+    // single FOV increment to span for each frame width pixel
+    fovStep = this.fov / this.frameWidth;
 
     constructor(properties?: any) {
         this.dungeon = properties?.dungeon ?? new Dungeon();
@@ -44,9 +47,49 @@ export class RendererService {
     render() {
         if (this.ctx) {
             this.drawBackground(this.ctx);
-            // TODO
+            this.drawWalls(this.ctx);
         }
     }
+
+    drawWalls(ctx: CanvasRenderingContext2D) {
+        console.log(`drawWalls: ${this.position.x}, ${this.position.y}, ${this.direction}`);
+        console.log(`fovStep: ${this.fovStep * 180 / Math.PI}deg`);
+        // calculate starting angle (direction - half the FOV)
+        let rayDirection = this.direction - this.fov / 2;
+        // for each canvas with pixel
+        for (let x = 0; x < this.frameWidth; x++) {
+            // cast ray to find distance to wall
+            let d = this.dungeon.castRay(this.position, rayDirection);
+            console.log(`d: ${d}`);
+            // calculate wall height basing on distance
+            let wallHeight = this.getWallHeight(d);
+            console.log(`wallHeight: ${wallHeight}`);
+            // TODO transform distance to correct distortion
+            // TODO fade color basing on distance
+            // TODO apply color shade basing on wall angle (wishlist)
+            // TODO draw wall
+            ctx.strokeStyle = "#777777";
+            ctx.beginPath();
+            ctx.moveTo(x, this.frameHeight / 2 - wallHeight / 2);
+            ctx.lineTo(x, this.frameHeight / 2 + wallHeight / 2);
+            ctx.stroke();
+            // set ray direction for new pixel
+            rayDirection += this.fovStep;
+        }
+    }
+
+
+    getWallHeight(d: number): number {
+        if (d < 0) {
+            return 0;
+        } else if (d <= 1) {
+            return this.frameHeight;
+        } else {
+            return this.frameHeight / d;
+        }
+    }
+
+
 
     /**
      * Draws the background on the provided canvas rendering context. The background consists of
